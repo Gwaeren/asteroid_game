@@ -31,14 +31,24 @@ def main():
                 return
         dt = frame_clock.tick(60) / 1000
         screen.fill("black")
+
         for item in drawable:
             item.draw(screen)
         updatable.update(dt)
+
         for item in asteroids:
             if item.collides_with(player):
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
+
+        for asteroid in asteroids:
+            for one_shot in shots:
+                if asteroid.collides_with(one_shot):
+                    log_event("asteroid_shot")
+                    asteroid.split()
+                    one_shot.kill()
+
         pygame.display.flip()
 
 
