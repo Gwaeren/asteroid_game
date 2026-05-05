@@ -7,6 +7,13 @@ from shot import Shot
 from constants import *
 from logger import log_state, log_event
 
+def draw_score_bar(screen, font, score, lives):
+    pygame.draw.rect(screen, SCORE_BAR_COLOR, (0, 0, SCREEN_WIDTH, SCORE_BAR_HEIGHT))
+    score_text = font.render(f"Score: {score}", True, SCORE_TEXT_COLOR)
+    screen.blit(score_text, (SCORE_BAR_HORIZONTAL_PADDING, SCORE_BAR_VERTICAL_PADDING))
+    lives_text = font.render(f"Lives: {lives}", True, SCORE_TEXT_COLOR)
+    screen.blit(lives_text, (SCREEN_WIDTH - lives_text.get_width() - SCORE_BAR_HORIZONTAL_PADDING, SCORE_BAR_VERTICAL_PADDING))
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -40,11 +47,7 @@ def main():
         for item in drawable:
             item.draw(screen)
 
-        pygame.draw.rect(screen, SCORE_BAR_COLOR, (0, 0, SCREEN_WIDTH, SCORE_BAR_HEIGHT))
-        score_text = font.render(f"Score: {score}", True, SCORE_TEXT_COLOR)
-        screen.blit(score_text, (30, 10))
-        lives_text = font.render(f"Lives: {lives}", True, SCORE_TEXT_COLOR)
-        screen.blit(lives_text, (SCREEN_WIDTH - lives_text.get_width() - 30, 10))
+        draw_score_bar(screen, font, score, lives)
 
         for item in asteroids:
             if item.collides_with(player) and not player.is_invincible():
